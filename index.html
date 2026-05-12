@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Tutor Cards — disclosure documents for AI tutors</title>
+  <meta name="description" content="An open JSON specification disclosing what an AI tutor will and will not do — audience, pedagogy, safety, FERPA/COPPA/GDPR compliance. Built for district procurement, LMS administrators, and parents." />
+  <meta name="theme-color" content="#0d9488" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AI Tutor Cards — disclosure for AI tutors" />
+  <meta property="og:description" content="Open JSON spec for AI tutor disclosure. FERPA, COPPA, GDPR, mandated reporter protocol, homework policy — all declared." />
+  <meta property="og:url" content="https://tutor.kineticgain.com/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="/" class="brand" aria-label="AI Tutor Cards home">
+        <span class="brand-mark" aria-hidden="true">⌬</span>
+        <span class="brand-text">
+          <strong>AI Tutor Cards</strong>
+          <small>Kinetic Gain Protocol Suite</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#why">Why</a>
+        <a href="#spec">Spec</a>
+        <a href="#example">Example</a>
+        <a href="#tooling">Tooling</a>
+        <a class="cta" href="https://github.com/mizcausevic-dev/ai-tutor-card-spec" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="pill">EdTech extension · v0.1 draft</span>
+        <h1>What is your AI tutor allowed to do?</h1>
+        <p class="lede">
+          <strong>AI Tutor Cards</strong> is an open JSON specification that forces AI tutoring vendors to
+          declare — in machine-readable form — exactly what their tutor will and will not do.
+          Audience, pedagogical approach, safety filters, FERPA / COPPA / GDPR posture, mandated reporter
+          protocol. Built for district procurement, LMS administrators, accreditation bodies, and parents.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://github.com/mizcausevic-dev/ai-tutor-card-spec" target="_blank" rel="noreferrer">Read the spec</a>
+          <a class="btn btn-secondary" href="https://mizcausevic-dev.github.io/kinetic-gain-visualizer/?view=editor" target="_blank" rel="noreferrer">Try the visualizer</a>
+        </div>
+        <ul class="hero-bullets">
+          <li><span class="dot dot-teal"></span> Conditional COPPA rule: audience under 13 ⇒ coppa_compliant MUST be true</li>
+          <li><span class="dot dot-teal"></span> Pairs with <a href="https://github.com/mizcausevic-dev/agent-cards-spec" target="_blank" rel="noreferrer">Agent Cards</a> via <code>agent_card_uri</code></li>
+          <li><span class="dot dot-teal"></span> Served at <code>/.well-known/tutors/&lt;tutor_id&gt;.json</code></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="why" class="block">
+      <div class="block-inner">
+        <h2>Why a tutor card, not just an agent card?</h2>
+        <p class="prose">
+          An <a href="https://github.com/mizcausevic-dev/agent-cards-spec" target="_blank" rel="noreferrer">Agent Card</a> describes a generic agent's capability surface. A Tutor Card is the EdTech-specialized sibling. It surfaces the questions that matter to a school district, a parent, or a state board of education — questions a generic capability disclosure cannot answer.
+        </p>
+        <div class="grid grid-3">
+          <article class="card">
+            <h3>Audience &amp; subject scope</h3>
+            <p>Age range, grade range, language codes. Primary subjects, included topics, and — critically — <strong>excluded topics</strong>. A math tutor that excludes "calculus" is more honest than one that claims "all math."</p>
+          </article>
+          <article class="card">
+            <h3>Pedagogy you can audit</h3>
+            <p>Socratic, direct instruction, scaffolded. <code>homework_policy</code> and <code>assessment_policy</code> declare whether the tutor will <em>complete</em>, <em>guide</em>, or <em>refuse</em> homework and assessment items.</p>
+          </article>
+          <article class="card">
+            <h3>Safety as data</h3>
+            <p>Content filter strength, mandated reporter protocol, human-in-loop escalation categories (mental health, self-harm, abuse). Booleans for blocking explicit / drug-alcohol / violence / political-advocacy content.</p>
+          </article>
+          <article class="card">
+            <h3>FERPA · COPPA · GDPR</h3>
+            <p>Declared compliance booleans, retention days, data sharing posture with parents and schools, third-party sharing flag, model training consent. A conditional schema rule enforces that under-13 audiences must declare COPPA compliance.</p>
+          </article>
+          <article class="card">
+            <h3>Curriculum alignment</h3>
+            <p>Common Core, NGSS, state frameworks. Each entry carries a framework name, version, and an optional <code>coverage_uri</code> pointing at a coverage report.</p>
+          </article>
+          <article class="card">
+            <h3>Evaluation evidence</h3>
+            <p><code>evaluations[]</code> entries link to external eval result URIs with subject-specific accuracy metrics. Procurement reviewers can compare two tutors on the same benchmark.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="spec" class="block block-tinted">
+      <div class="block-inner">
+        <h2>The four required sections</h2>
+        <ol class="numbered">
+          <li><strong>Tutor identity</strong> — <code>id</code>, <code>name</code>, <code>version</code>, <code>provider</code>, <code>description</code></li>
+          <li><strong>Audience</strong> — <code>age_range_min</code>/<code>max</code>, <code>grade_range_min</code>/<code>max</code>, <code>language_codes</code></li>
+          <li><strong>Pedagogy</strong> — <code>approach</code>, <code>homework_policy</code>, <code>assessment_policy</code></li>
+          <li><strong>Safety &amp; Privacy</strong> — <code>safety.content_filter_strength</code>, <code>safety.mandated_reporter_protocol</code>, <code>data_privacy.ferpa_compliant</code>, etc.</li>
+        </ol>
+        <p class="prose">
+          Plus optional sections for subject scope, curriculum alignment, evaluations, and the
+          <code>agent_card_uri</code> back-reference. The full schema is published as a JSON Schema draft 2020-12
+          document with a conditional <code>allOf/if/then</code> that enforces the COPPA rule.
+        </p>
+      </div>
+    </section>
+
+    <section id="example" class="block">
+      <div class="block-inner">
+        <h2>A minimal example</h2>
+        <p class="prose">Below is a Tutor Card for a K-12 math tutor. The same document can be served at <code>/.well-known/tutors/k12-math-tutor.json</code> for automated discovery.</p>
+        <pre class="code-block"><code>{
+  "tutor_card_version": "0.1",
+  "tutor": {
+    "id": "kineticgain-k12-math-tutor",
+    "name": "Kinetic Gain K-12 Math Tutor",
+    "version": "1.4.0",
+    "provider": "Kinetic Gain Edu",
+    "description": "Personal AI math tutor for K-12. Socratic; step-by-step; will not complete homework or assessment items."
+  },
+  "audience": {
+    "age_range_min": 5, "age_range_max": 18,
+    "grade_range_min": "K", "grade_range_max": "12",
+    "language_codes": ["en", "es"]
+  },
+  "subject_scope": {
+    "primary_subjects": ["Math"],
+    "topics_included": ["arithmetic", "algebra", "geometry", "statistics"],
+    "topics_excluded": ["differential equations", "linear algebra"]
+  },
+  "pedagogy": {
+    "approach": "socratic",
+    "homework_policy": "guide_only",
+    "assessment_policy": "refuse"
+  },
+  "safety": {
+    "content_filter_strength": "strict",
+    "mandated_reporter_protocol": true,
+    "human_in_loop_required": ["mental_health_disclosure", "abuse_disclosure", "self_harm_disclosure"]
+  },
+  "data_privacy": {
+    "ferpa_compliant": true,
+    "coppa_compliant": true,
+    "gdpr_compliant": true,
+    "retention_days": 90,
+    "data_sharing_with_parents": "summaries_only",
+    "data_sharing_with_school": "summaries_only",
+    "third_party_data_sharing": false,
+    "model_training_consent_required": true
+  },
+  "agent_card_uri": "https://edu.kineticgain.com/.well-known/agents/k12-math-tutor.json"
+}</code></pre>
+      </div>
+    </section>
+
+    <section id="tooling" class="block block-dark">
+      <div class="block-inner">
+        <h2>Tooling around the spec</h2>
+        <div class="grid grid-3">
+          <a class="card card-dark" href="https://github.com/mizcausevic-dev/ai-tutor-card-spec" target="_blank" rel="noreferrer">
+            <div class="card-eyebrow">Specification</div>
+            <h3>ai-tutor-card-spec</h3>
+            <p>The normative spec, JSON Schema, and canonical examples. Apache-licensed implementations, AGPL-licensed spec text.</p>
+            <span class="link">View repo →</span>
+          </a>
+          <a class="card card-dark" href="https://mizcausevic-dev.github.io/kinetic-gain-visualizer/" target="_blank" rel="noreferrer">
+            <div class="card-eyebrow">Visualizer</div>
+            <h3>kinetic-gain-visualizer</h3>
+            <p>One visualizer for all six specs in the Kinetic Gain Protocol Suite. Paste a Tutor Card and it renders a procurement-grade view with FERPA / COPPA / GDPR badges.</p>
+            <span class="link">Open visualizer →</span>
+          </a>
+          <a class="card card-dark" href="https://github.com/mizcausevic-dev/mcp-kinetic-gain" target="_blank" rel="noreferrer">
+            <div class="card-eyebrow">MCP server</div>
+            <h3>mcp-kinetic-gain</h3>
+            <p>24 tools across six specs over stdio MCP. Six Tutor Card tools: <code>tutor_card_fetch</code>, <code>tutor_card_validate</code>, <code>tutor_card_inspect</code>, <code>tutor_card_subject_check</code>, <code>tutor_card_coppa_check</code>, <code>tutor_card_well_known_url</code>.</p>
+            <span class="link">View on GitHub →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-inner block-narrow">
+        <h2>About the Kinetic Gain Protocol Suite</h2>
+        <p class="prose">
+          AI Tutor Cards is the EdTech-specialized extension to a family of six open JSON specifications
+          built for the answer-engine era: <a href="https://github.com/mizcausevic-dev/aeo-protocol-spec" target="_blank" rel="noreferrer">AEO Protocol</a> (entity declaration),
+          <a href="https://github.com/mizcausevic-dev/prompt-provenance-spec" target="_blank" rel="noreferrer">Prompt Provenance</a> (LLM prompt lineage),
+          <a href="https://github.com/mizcausevic-dev/agent-cards-spec" target="_blank" rel="noreferrer">Agent Cards</a> (capability disclosure),
+          <a href="https://github.com/mizcausevic-dev/ai-evidence-format-spec" target="_blank" rel="noreferrer">AI Evidence Format</a> (citation evidence),
+          <a href="https://github.com/mizcausevic-dev/mcp-tool-card-spec" target="_blank" rel="noreferrer">MCP Tool Cards</a> (tool disclosure),
+          and AI Tutor Cards.
+        </p>
+        <p class="prose">
+          All specs are AGPL-3.0 for the normative text, with unrestricted implementation freedom. Built by <a href="https://kineticgain.com" target="_blank" rel="noreferrer">Miz Causevic</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <small>© 2026 Miz Causevic · <a href="https://kineticgain.com" target="_blank" rel="noreferrer">kineticgain.com</a> · <a href="https://github.com/mizcausevic-dev" target="_blank" rel="noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/mirzacausevic/" target="_blank" rel="noreferrer">LinkedIn</a></small>
+      <small class="code">tutor.kineticgain.com · AI Tutor Cards v0.1</small>
+    </div>
+  </footer>
+</body>
+</html>
