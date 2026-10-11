@@ -11,7 +11,7 @@ Deployed at **[tutor.kineticgain.com](https://tutor.kineticgain.com)**.
 ├── index.html              # the landing page
 ├── style.css               # styles
 ├── .github/workflows/
-│   └── deploy.yml          # auto-sync to Hostinger over FTPS on push to main
+│   └── deploy.yml          # manual GitHub Actions upload (currently unverified)
 └── README.md
 ```
 
@@ -26,9 +26,9 @@ python3 -m http.server 8080
 
 ## Deployment
 
-Pushes to `main` trigger a GitHub Actions workflow that FTP-syncs the site root to `/tutor/` on Hostinger.
+Merging to `main` does not deploy. The GitHub Actions upload runs only on `workflow_dispatch`; its FTPS path is unverified. For a release, use the reviewed local Hostinger SSH/SFTP route with a pinned host key, exact file backups and hashes, hosted checks, and a tested restore.
 
-The workflow needs three repo secrets:
+The manually dispatched Actions upload needs three repo secrets:
 
 | Secret | Description |
 |---|---|
@@ -36,11 +36,7 @@ The workflow needs three repo secrets:
 | `FTP_USER` | Hostinger FTP username |
 | `FTP_PASS` | Hostinger FTP password |
 
-After the first push:
-
-1. Confirm the workflow succeeded under **Actions**.
-2. In Hostinger, create the subdomain `tutor.kineticgain.com` pointing at `/tutor/` as its document root.
-3. Verify DNS resolution and SSL provisioning.
+After a manual release, verify the hosted page, DNS, and TLS. The existing `tutor.kineticgain.com` document root is `/tutor/`.
 
 ## Related repositories
 
