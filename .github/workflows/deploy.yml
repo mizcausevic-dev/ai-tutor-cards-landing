@@ -1,8 +1,7 @@
 name: Deploy to Hostinger
 
 on:
-  push:
-    branches: [main]
+  # Manual release only while the legacy FTPS deploy path is unverified.
   workflow_dispatch:
 
 permissions:
