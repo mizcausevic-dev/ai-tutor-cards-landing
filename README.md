@@ -45,9 +45,9 @@ After the first push:
 ## Related repositories
 
 - **[ai-tutor-card-spec](https://github.com/mizcausevic-dev/ai-tutor-card-spec)** — the specification, JSON Schema, and canonical examples.
-- **[kinetic-gain-visualizer](https://github.com/mizcausevic-dev/kinetic-gain-visualizer)** — one visualizer for all six specs in the Kinetic Gain Protocol Suite, including AI Tutor Cards.
-- **[mcp-kinetic-gain](https://github.com/mizcausevic-dev/mcp-kinetic-gain)** — unified MCP server exposing 24 tools across six specs.
+- **[kinetic-gain-visualizer](https://github.com/mizcausevic-dev/kinetic-gain-visualizer)** — visualizer for supported Suite documents, including AI Tutor Cards.
+- **[mcp-kinetic-gain](https://github.com/mizcausevic-dev/mcp-kinetic-gain)** — v0.10.0 unified MCP server with 75 tools for twelve Suite specs, DefenseTech checks, and implementation previews.
 
 ## License
 
-Apache-2.0. The underlying specification is AGPL-3.0; implementations and supporting sites like this one are unrestricted.
+Apache-2.0 for this site. The underlying specification is MIT-licensed; reference implementations carry their own licenses.
