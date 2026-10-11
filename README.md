@@ -11,7 +11,7 @@ Deployed at **[tutor.kineticgain.com](https://tutor.kineticgain.com)**.
 ├── index.html              # the landing page
 ├── style.css               # styles
 ├── .github/workflows/
-│   └── deploy.yml          # auto-sync to Hostinger over FTPS on push to main
+│   └── deploy.yml          # manual GitHub Actions upload (currently unverified)
 └── README.md
 ```
 
@@ -26,9 +26,9 @@ python3 -m http.server 8080
 
 ## Deployment
 
-Pushes to `main` trigger a GitHub Actions workflow that FTP-syncs the site root to `/tutor/` on Hostinger.
+Merging to `main` does not deploy. The GitHub Actions upload runs only on `workflow_dispatch`; its FTPS path is unverified. For a release, use the reviewed local Hostinger SSH/SFTP route with a pinned host key, exact file backups and hashes, hosted checks, and a tested restore.
 
-The workflow needs three repo secrets:
+The manually dispatched Actions upload needs three repo secrets:
 
 | Secret | Description |
 |---|---|
@@ -36,18 +36,14 @@ The workflow needs three repo secrets:
 | `FTP_USER` | Hostinger FTP username |
 | `FTP_PASS` | Hostinger FTP password |
 
-After the first push:
-
-1. Confirm the workflow succeeded under **Actions**.
-2. In Hostinger, create the subdomain `tutor.kineticgain.com` pointing at `/tutor/` as its document root.
-3. Verify DNS resolution and SSL provisioning.
+After a manual release, verify the hosted page, DNS, and TLS. The existing `tutor.kineticgain.com` document root is `/tutor/`.
 
 ## Related repositories
 
 - **[ai-tutor-card-spec](https://github.com/mizcausevic-dev/ai-tutor-card-spec)** — the specification, JSON Schema, and canonical examples.
-- **[kinetic-gain-visualizer](https://github.com/mizcausevic-dev/kinetic-gain-visualizer)** — one visualizer for all six specs in the Kinetic Gain Protocol Suite, including AI Tutor Cards.
-- **[mcp-kinetic-gain](https://github.com/mizcausevic-dev/mcp-kinetic-gain)** — unified MCP server exposing 24 tools across six specs.
+- **[kinetic-gain-visualizer](https://github.com/mizcausevic-dev/kinetic-gain-visualizer)** — visualizer for supported Suite documents, including AI Tutor Cards.
+- **[mcp-kinetic-gain](https://github.com/mizcausevic-dev/mcp-kinetic-gain)** — v0.10.0 unified MCP server with 75 tools for twelve Suite specs, DefenseTech checks, and implementation previews.
 
 ## License
 
-Apache-2.0. The underlying specification is AGPL-3.0; implementations and supporting sites like this one are unrestricted.
+Apache-2.0 for this site. The underlying specification is MIT-licensed; reference implementations carry their own licenses.

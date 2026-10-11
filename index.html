@@ -15,7 +15,7 @@
 
   <link rel="stylesheet" href="/assets/fonts.css" />
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=6877235697a4c1fe" />
 </head>
 <body>
   <header class="nav">
@@ -43,8 +43,8 @@
         <span class="pill">EdTech extension · v0.1 draft</span>
         <h1>What is your AI tutor allowed to do?</h1>
         <p class="lede">
-          <strong>AI Tutor Cards</strong> is an open JSON specification that forces AI tutoring vendors to
-          declare — in machine-readable form — exactly what their tutor will and will not do.
+          <strong>AI Tutor Cards</strong> is an open JSON specification for AI tutoring vendors to
+          declare — in machine-readable form — what their tutor is intended to do and refuse.
           Audience, pedagogical approach, safety filters, FERPA / COPPA / GDPR posture, mandated reporter
           protocol. Built for district procurement, LMS administrators, accreditation bodies, and parents.
         </p>
@@ -53,7 +53,7 @@
           <a class="btn btn-secondary" href="https://mizcausevic-dev.github.io/kinetic-gain-visualizer/?view=editor" target="_blank" rel="noreferrer">Try the visualizer</a>
         </div>
         <ul class="hero-bullets">
-          <li><span class="dot dot-teal"></span> Conditional COPPA rule: audience under 13 ⇒ coppa_compliant MUST be true</li>
+          <li><span class="dot dot-teal"></span> Schema rule: an under-13 audience requires a declared <code>coppa_compliant</code> value of <code>true</code>; this is not legal verification</li>
           <li><span class="dot dot-teal"></span> Pairs with <a href="https://github.com/mizcausevic-dev/agent-cards-spec" target="_blank" rel="noreferrer">Agent Cards</a> via <code>agent_card_uri</code></li>
           <li><span class="dot dot-teal"></span> Served at <code>/.well-known/tutors/&lt;tutor_id&gt;.json</code></li>
         </ul>
@@ -81,7 +81,7 @@
           </article>
           <article class="card">
             <h3>FERPA · COPPA · GDPR</h3>
-            <p>Declared compliance booleans, retention days, data sharing posture with parents and schools, third-party sharing flag, model training consent. A conditional schema rule enforces that under-13 audiences must declare COPPA compliance.</p>
+            <p>Declared compliance booleans, retention days, data sharing posture with parents and schools, third-party sharing flag, model training consent. A conditional schema rule checks the under-13 COPPA declaration; reviewers must verify actual compliance independently.</p>
           </article>
           <article class="card">
             <h3>Curriculum alignment</h3>
@@ -115,7 +115,7 @@
     <section id="example" class="block">
       <div class="block-inner">
         <h2>A minimal example</h2>
-        <p class="prose">Below is a Tutor Card for a K-12 math tutor. The same document can be served at <code>/.well-known/tutors/k12-math-tutor.json</code> for automated discovery.</p>
+        <p class="prose">Illustrative, fictional Tutor Card. It does not describe a deployed tutor or establish FERPA, COPPA, or GDPR compliance. A vendor could publish its own card at a <code>/.well-known/tutors/&lt;tutor_id&gt;.json</code> URL for automated discovery.</p>
         <pre class="code-block"><code>{
   "tutor_card_version": "0.1",
   "tutor": {
@@ -167,19 +167,19 @@
           <a class="card card-dark" href="https://github.com/mizcausevic-dev/ai-tutor-card-spec" target="_blank" rel="noreferrer">
             <div class="card-eyebrow">Specification</div>
             <h3>ai-tutor-card-spec</h3>
-            <p>The normative spec, JSON Schema, and canonical examples. Apache-licensed implementations, AGPL-licensed spec text.</p>
+            <p>The MIT-licensed normative spec, JSON Schema, and canonical examples. Reference implementations carry their own licenses.</p>
             <span class="link">View repo →</span>
           </a>
           <a class="card card-dark" href="https://mizcausevic-dev.github.io/kinetic-gain-visualizer/" target="_blank" rel="noreferrer">
             <div class="card-eyebrow">Visualizer</div>
             <h3>kinetic-gain-visualizer</h3>
-            <p>One visualizer for all six specs in the Kinetic Gain Protocol Suite. Paste a Tutor Card and it renders a procurement-grade view with FERPA / COPPA / GDPR badges.</p>
+            <p>Visualizes supported Suite documents. Paste a Tutor Card to see its declared FERPA / COPPA / GDPR fields in a reviewable view.</p>
             <span class="link">Open visualizer →</span>
           </a>
           <a class="card card-dark" href="https://github.com/mizcausevic-dev/mcp-kinetic-gain" target="_blank" rel="noreferrer">
             <div class="card-eyebrow">MCP server</div>
             <h3>mcp-kinetic-gain</h3>
-            <p>24 tools across six specs over stdio MCP. Six Tutor Card tools: <code>tutor_card_fetch</code>, <code>tutor_card_validate</code>, <code>tutor_card_inspect</code>, <code>tutor_card_subject_check</code>, <code>tutor_card_coppa_check</code>, <code>tutor_card_well_known_url</code>.</p>
+            <p>v0.10.0 offers 75 tools for 12 Suite specs, DefenseTech checks, and implementation previews over stdio MCP. Six Tutor Card tools: <code>tutor_card_fetch</code>, <code>tutor_card_validate</code>, <code>tutor_card_inspect</code>, <code>tutor_card_subject_check</code>, <code>tutor_card_coppa_check</code>, <code>tutor_card_well_known_url</code>.</p>
             <span class="link">View on GitHub →</span>
           </a>
         </div>
@@ -190,8 +190,8 @@
       <div class="block-inner block-narrow">
         <h2>About the Kinetic Gain Protocol Suite</h2>
         <p class="prose">
-          AI Tutor Cards is the EdTech-specialized extension to a family of six open JSON specifications
-          built for the answer-engine era: <a href="https://github.com/mizcausevic-dev/aeo-protocol-spec" target="_blank" rel="noreferrer">AEO Protocol</a> (entity declaration),
+          AI Tutor Cards is an EdTech extension in a family of twelve open JSON specifications
+          built for the answer-engine era. Related specs include <a href="https://github.com/mizcausevic-dev/aeo-protocol-spec" target="_blank" rel="noreferrer">AEO Protocol</a> (entity declaration),
           <a href="https://github.com/mizcausevic-dev/prompt-provenance-spec" target="_blank" rel="noreferrer">Prompt Provenance</a> (LLM prompt lineage),
           <a href="https://github.com/mizcausevic-dev/agent-cards-spec" target="_blank" rel="noreferrer">Agent Cards</a> (capability disclosure),
           <a href="https://github.com/mizcausevic-dev/ai-evidence-format-spec" target="_blank" rel="noreferrer">AI Evidence Format</a> (citation evidence),
@@ -199,7 +199,7 @@
           and AI Tutor Cards — with its EdTech siblings <a href="https://student.kineticgain.com" target="_blank" rel="noreferrer">Student AI Disclosure</a> and <a href="https://aup.kineticgain.com" target="_blank" rel="noreferrer">Classroom AI AUP</a>. <strong>Front door: <a href="https://suite.kineticgain.com" target="_blank" rel="noreferrer">suite.kineticgain.com</a></strong>.
         </p>
         <p class="prose">
-          All specs are AGPL-3.0 for the normative text, with unrestricted implementation freedom. Built by <a href="https://kineticgain.com" target="_blank" rel="noreferrer">Miz Causevic</a>.
+          The Suite specifications are MIT-licensed; reference implementations carry their own licenses. Built by <a href="https://kineticgain.com" target="_blank" rel="noreferrer">Miz Causevic</a>.
         </p>
       </div>
     </section>
